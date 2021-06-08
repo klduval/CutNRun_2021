@@ -1,2 +1,4 @@
 # CutNRun_2021
-scripts from "High resolution profiling of chromatin states during zebrafish gastrulation using CUT&amp;RUN and CUT&amp;TAG"
+Scripts from "High resolution profiling of chromatin states during zebrafish gastrulation using CUT&RUN and CUT&TAG"
+
+Feel free to email me at kduval@uga.edu with any questions
