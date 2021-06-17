@@ -1,12 +1,11 @@
 #!/bin/bash
 BASEDIR="/scratch/kld57880/methods_paper2"
 
-###I've made sub-directories for all the different data sets involved here:
-#mkdir $BASEDIR/RNA_seq
-#mkdir $BASEDIR/K9_chip
-#mkdir $BASEDIR/K4_K27_chip
-#mkdir $BASEDIR/cutNrun_mods
-#mkdir $BASEDIR/cutNrun_pol2
+mkdir $BASEDIR/RNA_seq
+mkdir $BASEDIR/K9_chip
+mkdir $BASEDIR/K4_K27_chip
+mkdir $BASEDIR/cutNrun_mods
+mkdir $BASEDIR/cutNrun_pol2
 
 ##download relevant reference genomes and annotations
 ##zebrafish:
