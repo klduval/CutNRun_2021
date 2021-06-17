@@ -1,13 +1,4 @@
 #!/bin/bash
-#SBATCH --job-name=cutNrun_methods_paper
-#SBATCH --partition=batch
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=24
-#SBATCH --mem=100gb
-#SBATCH --time=72:00:00
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=kld57880@uga.edu
-
 BASEDIR="/scratch/kld57880/methods_paper2"
 
 ###I've made sub-directories for all the different data sets involved here:
