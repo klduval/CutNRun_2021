@@ -555,3 +555,23 @@ bedtools genomecov -bg -i $BASEDIR/mappability_low.bed -g $BASEDIR/chrNameLength
 bedtools intersect -a $BASEDIR/cutNrun_mods/peaks/CnR_NOT_ChIP_K9.bed -b $BASEDIR/mappability_low.bg -wa -u -f 0.3 > $BASEDIR/cutNrun_mods/peaks/CnR_only_LOWmap.bed
 bedtools intersect -a $BASEDIR/cutNrun_mods/peaks/ChIP_NOT_CnR_K9.bed -b $BASEDIR/mappability_low.bg -wa -u -f 0.3 > $BASEDIR/cutNrun_mods/peaks/ChIP_only_LOWmap.bed
 bedtools intersect -a $BASEDIR/cutNrun_mods/peaks/K9_CnR_AND_ChIP_peaks.bed -b $BASEDIR/mappability_low.bg -wa -u -f 0.3 > $BASEDIR/cutNrun_mods/peaks/CnR_ChIP_sharedPeaks_LOWmap.bed
+
+
+#####these sections from paper revions#####
+
+##making some QC figures to compare replicates
+multiBigwigSummary bins -b $BASEDIR/cutNrun_mods/bws/* $BASEDIR/cutNrun_pol2/bws/*pol2.norm* -o $BASEDIR/bw_summ_total.npz -bs 1000 -bl $BASEDIR/K9_chip/peaks/blacklist.bed -p 20
+plotCorrelation -in $BASEDIR/bw_summ_total.npz -c spearman -p heatmap --plotNumbers --colorMap Greens -o $BASEDIR/figs/bw_total_summ.heatmap.pdf
+plotPCA -in $BASEDIR/bw_summ_total.npz --colors purple orchid green lime navy blue darkorange orange -o $BASEDIR/figs/bw_total_PCA.pdf
+
+###making bws of the mean of the replicates for profile plots
+bigwigCompare -b1 $BASEDIR/cutNrun_mods/bws/wt_K27_1.norm_sort.bw -b2 $BASEDIR/cutNrun_mods/bws/wt_K27_2.norm_sort.bw --operation mean -bs 10 -p 20 -o $BASEDIR/cutNrun_mods/bws/wt_K27_meanOFreps.bw
+bigwigCompare -b1 $BASEDIR/cutNrun_mods/bws/wt_K4_1.norm_sort.bw -b2 $BASEDIR/cutNrun_mods/bws/wt_K4_2.norm_sort.bw --operation mean -bs 10 -p 20 -o $BASEDIR/cutNrun_mods/bws/wt_K4_meanOFreps.bw
+bigwigCompare -b1 $BASEDIR/cutNrun_mods/bws/wt_K9_1.norm_sort.bw -b2 $BASEDIR/cutNrun_mods/bws/wt_K9_2.norm_sort.bw --operation mean -bs 10 -p 20 -o $BASEDIR/cutNrun_mods/bws/wt_K9_meanOFreps.bw
+bigwigCompare -b1 $BASEDIR/cutNrun_pol2/bws/wt_1_pol2.norm_sort.bw -b2 $BASEDIR/cutNrun_pol2/bws/wt_3_pol2.norm_sort.bw --operation mean -bs 10 -p 20 -o $BASEDIR/cutNrun_pol2/bws/wt_pol2_meanOFreps.bw
+
+computeMatrix scale-regions -S $BASEDIR/cutNrun_pol2/bws/wt_pol2_meanOFreps.bw  -R $BASEDIR/genes.bed -p 20 -b 2000 -a 2000 -bs=10 --missingDataAsZero -out $BASEDIR/cutNrun_pol2/pol2_genes_meanOFreps.gz
+plotProfile -m $BASEDIR/cutNrun_pol2/pol2_genes_meanOFreps.gz -out $BASEDIR/figs/pol2_genes_meanOFreps.profile.pdf --colors orange
+
+computeMatrix scale-regions -S $BASEDIR/cutNrun_mods/bws/wt_K4_meanOFreps.bw $BASEDIR/cutNrun_mods/bws/wt_K27_meanOFreps.bw -R $BASEDIR/genes.bed -p 20 -b 2000 -a 2000 -bs=10 --missingDataAsZero -out $BASEDIR/cutNrun_mods/K4_K27_genes_meanOFreps.gz
+plotProfile -m $BASEDIR/cutNrun_mods/K4_K27_genes_meanOFreps.gz -out $BASEDIR/figs/K4_K27_meanOFreps.profile.pdf --perGroup --colors green purple
